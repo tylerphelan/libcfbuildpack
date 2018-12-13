@@ -24,15 +24,22 @@ import (
 	"testing"
 )
 
-// WriteTestFile writes a file during testing.
+// WriteFile writes a file during testing.
 func WriteFile(t *testing.T, filename string, format string, args ...interface{}) {
+	t.Helper()
+
+	WriteFileWithPem(t, filename, 0644, format, args...)
+}
+
+// WriteFileWithPerm writes a file with specific permissions during testing.
+func WriteFileWithPem(t *testing.T, filename string, perm os.FileMode, format string, args ...interface{}) {
 	t.Helper()
 
 	if err := os.MkdirAll(filepath.Dir(filename), 0755); err != nil {
 		t.Fatal(err)
 	}
 
-	if err := ioutil.WriteFile(filename, []byte(fmt.Sprintf(format, args...)), 0644); err != nil {
+	if err := ioutil.WriteFile(filename, []byte(fmt.Sprintf(format, args...)), perm); err != nil {
 		t.Fatal(err)
 	}
 }
