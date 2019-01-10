@@ -21,21 +21,24 @@ import (
 	"strings"
 
 	"github.com/buildpack/libbuildpack/logger"
+	"github.com/cloudfoundry/libcfbuildpack/buildpack"
 	"github.com/fatih/color"
 )
 
-const indent = "      "
-
-var eyeCatcher string
+const indent = "   "
 
 func init() {
 	color.NoColor = false
-	eyeCatcher = color.New(color.FgRed, color.Bold).Sprint("----->")
 }
 
 // Logger is an extension to libbuildpack.Logger to add additional functionality.
 type Logger struct {
 	logger.Logger
+}
+
+// Announce prints the identity of the buildpack.
+func (l Logger) Announce(buildpack buildpack.Buildpack) {
+	l.Info(l.PrettyIdentity(buildpack))
 }
 
 // FirstLine prints the log messages with the first line eye catcher.
@@ -44,7 +47,7 @@ func (l Logger) FirstLine(format string, args ...interface{}) {
 		return
 	}
 
-	l.Info("%s %s", eyeCatcher, fmt.Sprintf(format, args...))
+	l.Info(" 🤞 %s", fmt.Sprintf(format, args...))
 }
 
 // SubsequentLine prints log message with the subsequent line indent.
