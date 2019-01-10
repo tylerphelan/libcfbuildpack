@@ -21,7 +21,6 @@ import (
 	"strings"
 
 	"github.com/buildpack/libbuildpack/logger"
-	"github.com/cloudfoundry/libcfbuildpack/buildpack"
 	"github.com/fatih/color"
 )
 
