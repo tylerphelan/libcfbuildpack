@@ -36,11 +36,6 @@ type Logger struct {
 	logger.Logger
 }
 
-// Announce prints the identity of the buildpack.
-func (l Logger) Announce(buildpack buildpack.Buildpack) {
-	l.Info(l.PrettyIdentity(buildpack))
-}
-
 // FirstLine prints the log messages with the first line eye catcher.
 func (l Logger) FirstLine(format string, args ...interface{}) {
 	if !l.IsInfoEnabled() {

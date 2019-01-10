@@ -37,6 +37,11 @@ type Buildpack struct {
 	logger logger.Logger
 }
 
+// Announce prints the identity of the buildpack.
+func (b Buildpack) Announce() {
+	b.logger.Info(b.logger.PrettyIdentity(b))
+}
+
 // Dependencies returns the collection of dependencies extracted from the generic buildpack metadata.
 func (b Buildpack) Dependencies() (Dependencies, error) {
 	deps, ok := b.Metadata["dependencies"].([]map[string]interface{})
