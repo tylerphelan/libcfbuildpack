@@ -41,7 +41,7 @@ func (l Logger) FirstLine(format string, args ...interface{}) {
 		return
 	}
 
-	l.Info(" 🤞 %s", fmt.Sprintf(format, args...))
+	l.Info(" ☢️ %s", fmt.Sprintf(format, args...))
 }
 
 // SubsequentLine prints log message with the subsequent line indent.
