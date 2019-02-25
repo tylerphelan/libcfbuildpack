@@ -18,14 +18,17 @@ package buildpack
 
 import (
 	"fmt"
-	"path/filepath"
-
 	"github.com/buildpack/libbuildpack/buildpack"
 	"github.com/cloudfoundry/libcfbuildpack/logger"
 	"github.com/mitchellh/mapstructure"
+	"path/filepath"
 )
 
-const cacheRoot = "dependency-cache"
+const (
+	cacheRoot            = "dependency-cache"
+	DEPENDENCIES         = "dependencies"
+	DEFAULT_DEPENDENCIES = "default_dependencies"
+)
 
 // Buildpack is an extension to libbuildpack.Buildpack that adds additional opinionated behaviors.
 type Buildpack struct {
@@ -39,7 +42,7 @@ type Buildpack struct {
 
 // Dependencies returns the collection of dependencies extracted from the generic buildpack metadata.
 func (b Buildpack) Dependencies() (Dependencies, error) {
-	deps, ok := b.Metadata["dependencies"].([]map[string]interface{})
+	deps, ok := b.Metadata[DEPENDENCIES].([]map[string]interface{})
 	if !ok {
 		return Dependencies{}, nil
 	}
@@ -56,6 +59,15 @@ func (b Buildpack) Dependencies() (Dependencies, error) {
 
 	b.logger.Debug("Dependencies: %s", dependencies)
 	return dependencies, nil
+}
+
+func (b Buildpack) DefaultVersion(id string) string {
+	defaults, ok := b.Metadata[DEFAULT_DEPENDENCIES].(map[string]interface{})
+	if !ok {
+		return ""
+	}
+
+	return defaults[id].(string)
 }
 
 // Identity make Buildpack satisfy the Identifiable interface.
