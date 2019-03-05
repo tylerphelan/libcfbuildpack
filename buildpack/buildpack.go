@@ -25,9 +25,9 @@ import (
 )
 
 const (
-	cacheRoot            = "dependency-cache"
-	DEPENDENCIES         = "dependencies"
-	DEFAULT_DEPENDENCIES = "default_dependencies"
+	cacheRoot           = "dependency-cache"
+	DefaultDependencies = "default_dependencies"
+	DefaultVersions     = "default_versions"
 )
 
 // Buildpack is an extension to libbuildpack.Buildpack that adds additional opinionated behaviors.
@@ -42,7 +42,7 @@ type Buildpack struct {
 
 // Dependencies returns the collection of dependencies extracted from the generic buildpack metadata.
 func (b Buildpack) Dependencies() (Dependencies, error) {
-	deps, ok := b.Metadata[DEPENDENCIES].([]map[string]interface{})
+	deps, ok := b.Metadata[DefaultDependencies].([]map[string]interface{})
 	if !ok {
 		return Dependencies{}, nil
 	}
@@ -61,13 +61,18 @@ func (b Buildpack) Dependencies() (Dependencies, error) {
 	return dependencies, nil
 }
 
-func (b Buildpack) DefaultVersion(id string) string {
-	defaults, ok := b.Metadata[DEFAULT_DEPENDENCIES].(map[string]interface{})
+func (b Buildpack) DefaultVersion(id string) (string, error) {
+	defaults, ok := b.Metadata[DefaultVersions].(map[string]interface{})
 	if !ok {
-		return ""
+		return "", nil
 	}
 
-	return defaults[id].(string)
+	version, ok := defaults[id].(string)
+	if !ok {
+		return "", fmt.Errorf("%s does not map to a string in %s map", id, DefaultVersions)
+	}
+
+	return version, nil
 }
 
 // Identity make Buildpack satisfy the Identifiable interface.
