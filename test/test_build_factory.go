@@ -87,12 +87,12 @@ func (f *BuildFactory) AddDefaultDependency(id, version string) {
 		f.Build.Buildpack.Metadata = make(buildpack.Metadata)
 	}
 
-	if _, ok := f.Build.Buildpack.Metadata[buildpack.DEFAULT_DEPENDENCIES]; !ok {
-		f.Build.Buildpack.Metadata[buildpack.DEFAULT_DEPENDENCIES] = map[string]interface{}{}
+	if _, ok := f.Build.Buildpack.Metadata[buildpack.DefaultDependencies]; !ok {
+		f.Build.Buildpack.Metadata[buildpack.DefaultDependencies] = map[string]interface{}{}
 	}
 
 	metadata := f.Build.Buildpack.Metadata
-	metadata[buildpack.DEFAULT_DEPENDENCIES].(map[string]interface{})[id] = version
+	metadata[buildpack.DefaultDependencies].(map[string]interface{})[id] = version
 }
 
 // AddService adds an entry to the collection of services.
