@@ -79,8 +79,8 @@ func (f *BuildFactory) AddDependencyWithVersion(id string, version string, fixtu
 	f.addDependency(d)
 }
 
-// SetDefaultDependendency sets a default dependency to the buildpack metadata
-func (f *BuildFactory) SetDefaultDependency(id, version string) {
+// SetDefaultVersion sets a default dependency to the buildpack metadata
+func (f *BuildFactory) SetDefaultVersion(id, version string) {
 	f.t.Helper()
 
 	if f.Build.Buildpack.Metadata == nil {
@@ -113,12 +113,12 @@ func (f *BuildFactory) addDependency(dependency buildpack.Dependency) {
 		f.Build.Buildpack.Metadata = make(buildpack.Metadata)
 	}
 
-	if _, ok := f.Build.Buildpack.Metadata["dependencies"]; !ok {
-		f.Build.Buildpack.Metadata["dependencies"] = make([]map[string]interface{}, 0)
+	if _, ok := f.Build.Buildpack.Metadata[buildpack.DependenciesMetadata]; !ok {
+		f.Build.Buildpack.Metadata[buildpack.DependenciesMetadata] = make([]map[string]interface{}, 0)
 	}
 
 	metadata := f.Build.Buildpack.Metadata
-	dependencies := metadata["dependencies"].([]map[string]interface{})
+	dependencies := metadata[buildpack.DependenciesMetadata].([]map[string]interface{})
 
 	var stacks []interface{}
 	for _, stack := range dependency.Stacks {
@@ -133,7 +133,7 @@ func (f *BuildFactory) addDependency(dependency buildpack.Dependency) {
 		})
 	}
 
-	metadata["dependencies"] = append(dependencies, map[string]interface{}{
+	metadata[buildpack.DependenciesMetadata] = append(dependencies, map[string]interface{}{
 		"id":       dependency.ID,
 		"name":     dependency.Name,
 		"version":  dependency.Version.Version.Original(),
