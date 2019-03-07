@@ -79,7 +79,7 @@ func (f *BuildFactory) AddDependencyWithVersion(id string, version string, fixtu
 	f.addDependency(d)
 }
 
-// AddDefaultDependendency adds a default dependency to the buildpack metadata
+// SetDefaultDependendency sets a default dependency to the buildpack metadata
 func (f *BuildFactory) SetDefaultDependency(id, version string) {
 	f.t.Helper()
 
