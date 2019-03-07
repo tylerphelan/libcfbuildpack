@@ -80,19 +80,19 @@ func (f *BuildFactory) AddDependencyWithVersion(id string, version string, fixtu
 }
 
 // AddDefaultDependendency adds a default dependency to the buildpack metadata
-func (f *BuildFactory) AddDefaultDependency(id, version string) {
+func (f *BuildFactory) SetDefaultDependency(id, version string) {
 	f.t.Helper()
 
 	if f.Build.Buildpack.Metadata == nil {
 		f.Build.Buildpack.Metadata = make(buildpack.Metadata)
 	}
 
-	if _, ok := f.Build.Buildpack.Metadata[buildpack.DefaultDependencies]; !ok {
-		f.Build.Buildpack.Metadata[buildpack.DefaultDependencies] = map[string]interface{}{}
+	if _, ok := f.Build.Buildpack.Metadata[buildpack.DefaultVersions]; !ok {
+		f.Build.Buildpack.Metadata[buildpack.DefaultVersions] = map[string]interface{}{}
 	}
 
 	metadata := f.Build.Buildpack.Metadata
-	metadata[buildpack.DefaultDependencies].(map[string]interface{})[id] = version
+	metadata[buildpack.DefaultVersions].(map[string]interface{})[id] = version
 }
 
 // AddService adds an entry to the collection of services.

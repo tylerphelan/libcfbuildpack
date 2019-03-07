@@ -37,7 +37,7 @@ func TestBuildpack(t *testing.T) {
 		it("returns dependencies", func() {
 			b := bp.Buildpack{
 				Metadata: bp.Metadata{
-					buildpack.DefaultDependencies: []map[string]interface{}{
+					buildpack.DependenciesMetadata: []map[string]interface{}{
 						{
 							"id":      "test-id-1",
 							"name":    "test-name-1",
